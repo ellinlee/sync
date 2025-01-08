@@ -9,9 +9,6 @@ This repository contains examples and code snippets related to ABAP data types, 
 
 ## Usage
 1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/abap-data-types.git
-   ```
 2. Explore the code files to learn about ABAP data types and how to use them.
 3. Test the examples in your SAP system.
 
