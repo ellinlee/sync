@@ -40,7 +40,3 @@ This repository contains examples of ABAP programs designed for practice and lea
 ## Contribution
 
 Contributions are welcome! If you'd like to add new examples or improve existing ones, feel free to fork this repository, make changes, and create a pull request.
-
----
-
-Let me know if you'd like any additional details or changes! 😊
