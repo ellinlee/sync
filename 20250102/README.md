@@ -25,7 +25,3 @@ This repository contains examples of ABAP programs for learning and reference pu
 ## Contribution
 
 Feel free to contribute by adding new examples or improving the existing ones. Create a pull request with your changes!
-
----
-
-Let me know if you'd like to add more details or specific instructions! 😊
