@@ -12,7 +12,7 @@ This repository contains examples and explanations of ABAP function modules and 
 
 ### Overview
 
-`ZBC400_D17_COMPUTE` is an SAP ABAP report that performs basic arithmetic operations (+, -, *, /, %) on two user-provided integers. It showcases error handling, formatted output, and modular programming techniques.
+`ZBC400_D17_COMPUTE` is an SAP ABAP report that performs basic arithmetic operations (+, -, *, /, %, P-power) on two user-provided integers. It showcases error handling, formatted output, and modular programming techniques.
 
 ### Features
 
