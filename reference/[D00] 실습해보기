@@ -1,0 +1,43 @@
+*&---------------------------------------------------------------------
+*& Report ZD00_EX01
+*&---------------------------------------------------------------------
+*&
+*&---------------------------------------------------------------------
+REPORT zd00_ex01.
+
+*---------------------------------------------------------------------
+* ###
+*---------------------------------------------------------------------
+
+*- local data type
+TYPES : tv_char10     TYPE c LENGTH 10,           "char ### 10##
+        tv_int        TYPE i,                     "## ##
+        tv_percentage TYPE p LENGTH 3 DECIMALS 2. "3## ### 2##
+
+*- ###### ## ##
+PARAMETERS : pa_dept TYPE tv_char10,
+             pa_name TYPE tv_char10.
+
+PARAMETERS : pa_carr TYPE s_carr_id.
+
+*- elementary data object
+DATA : gv_dept TYPE tv_char10. "###
+DATA : gv_name TYPE tv_char10. "##
+DATA : gv_age  TYPE tv_int.    "##
+*DATA : gv_date TYPE d.         "##
+DATA : gv_date TYPE sy-datum.
+
+*---------------------------------------------------------------------
+* ### ##
+*---------------------------------------------------------------------
+* # ##
+MOVE pa_dept TO gv_dept.
+MOVE pa_name TO gv_name.
+gv_age  = 20.
+gv_date = sy-datum.
+
+*## ##
+WRITE : gv_dept,
+      / gv_name,
+      / gv_age,
+      / gv_date.

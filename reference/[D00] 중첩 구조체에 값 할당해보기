@@ -1,0 +1,29 @@
+*&---------------------------------------------------------------------*
+*& Report ZBC430_D00_STRUCT_NESTED
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zbc430_d00_struct_nested.
+
+" sturctured data type -> data object
+DATA : gs_person TYPE zperson_d00.
+
+START-OF-SELECTION.
+
+" # ##
+  gs_person-name-firstname = '##'(n01).
+  gs_person-name-lastname  = '#'(n02).
+
+  gs_person-street = '##'.
+  gs_person-nr     = '3'.
+  gs_person-city   = '###'.
+  gs_person-zip    = '12345'.
+
+" # ##
+
+  WRITE : / gs_person-name-firstname,
+            gs_person-name-lastname,
+          / gs_person-street,
+            gs_person-nr,
+            gs_person-city,
+            gs_person-zip.

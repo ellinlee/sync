@@ -1,0 +1,48 @@
+*&---------------------------------------------------------------------*
+*& Report ZBC430_D00_ITAB_SORTED
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zbc430_d00_itab_sorted.
+
+DATA : gs_sflight TYPE sflight.         "WA
+DATA : gt_sflight TYPE zit_sflight_d00. "ITAB
+
+*- 1. WA # #### select #### ### ##
+" SQL (#### ####!!)
+WRITE : 'Printout in tableorder of Database:'.
+
+SELECT * FROM sflight         "db table (data# ### ##. contents)
+         INTO gs_sflight
+        WHERE carrid = 'JL'.
+
+  WRITE :/ gs_sflight-carrid,
+           gs_sflight-connid,
+           gs_sflight-fldate,
+           gs_sflight-planetype,
+           gs_sflight-price,
+           gs_sflight-currency.
+
+ENDSELECT.
+
+ULINE.
+
+*- 2. Array Fetch (### ##)
+WRITE / 'Printout in tableorder of sorted ITAB:'.
+
+SELECT * FROM sflight
+         INTO TABLE gt_sflight
+              WHERE carrid = 'JL'.
+
+LOOP AT gt_sflight INTO gs_sflight.
+
+  "gs_sflight (table type # line type# ##)
+
+  WRITE :/ gs_sflight-carrid,
+          gs_sflight-connid,
+          gs_sflight-fldate,
+          gs_sflight-planetype,
+          gs_sflight-price,
+          gs_sflight-currency.
+
+ENDLOOP.

@@ -1,0 +1,72 @@
+*&---------------------------------------------------------------------*
+*& Report ZBC430_D00_STRUCT_DEEP
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zbc430_d00_struct_deep.
+
+*--------------------------------------------------------------------*
+* ### ##
+*--------------------------------------------------------------------*
+DATA : gs_person TYPE zperson_d00.
+DATA : gs_phone  TYPE str_phone.   "Phone # line type
+DATA : gs_phone1 LIKE LINE OF gs_person-phone.
+
+*--------------------------------------------------------------------*
+* ### ##
+*--------------------------------------------------------------------*
+START-OF-SELECTION.
+
+  " # ####
+
+  " 1) ##
+  gs_person-name-firstname = 'Sohee'.
+  gs_person-name-lastname = 'Park'.
+
+  " 2) ##
+  gs_person-street = 'Privet Drive'.
+  gs_person-nr     = '3'.
+  gs_person-zip    = 'GB-10889'.
+  gs_person-city   = 'Seoul'.
+
+  " 3) #### (##) : WA # #### ITAB# #### !!
+  gs_phone-p_type   = 'P'.
+  gs_phone-p_number = '+31-10-9938990'.
+
+  INSERT gs_phone INTO TABLE gs_person-phone.
+
+  gs_phone-p_type   = 'F'.
+  gs_phone-p_number = '+31-10-9938991'.
+  INSERT gs_phone INTO TABLE gs_person-phone.
+
+  gs_phone-p_type   = 'M'.
+  gs_phone-p_number = '+31-79-12211433'.
+  INSERT gs_phone INTO TABLE gs_person-phone.
+
+
+*--------------------------------------------------------------------*
+* ### ##
+*--------------------------------------------------------------------*
+  " 1) ##
+  WRITE : / gs_person-name-firstname ,
+            gs_person-name-lastname ,
+" 2) ##
+         /  gs_person-street ,
+            gs_person-nr ,
+            gs_person-zip ,
+            gs_person-city .
+
+  " 3) #### (##)
+  WRITE : / 'Phone-Numbers:'.
+
+  LOOP AT gs_person-phone INTO gs_phone.
+    WRITE :  AT 20 gs_phone-p_type,
+                   gs_phone-p_number.
+    NEW-LINE.
+  ENDLOOP.
+
+  CLEAR gs_phone.
+
+  READ TABLE gs_person-phone INTO gs_phone INDEX 2.
+
+  WRITE gs_phone-p_number.

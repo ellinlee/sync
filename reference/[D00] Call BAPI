@@ -1,0 +1,54 @@
+*&---------------------------------------------------------------------*
+*& Report ZD00_BAPI
+*&---------------------------------------------------------------------*
+*& T-code : BAPI
+*&---------------------------------------------------------------------*
+REPORT zd00_bapi.
+
+DATA: gv_user   TYPE sy-uname,
+      gt_return TYPE TABLE OF bapiret2.
+
+DATA : gt_list  TYPE TABLE OF  bapisbodat.
+
+CALL FUNCTION 'BAPI_FLBOOKING_GETLIST'
+  EXPORTING
+    airline       = 'AA'
+    travel_agency = '00000055'
+*   CUSTOMER_NUMBER          =
+   MAX_ROWS      = 50
+  TABLES
+*   FLIGHT_DATE_RANGE        =
+*   BOOKING_DATE_RANGE       =
+*   EXTENSION_IN  =
+    booking_list  = gt_list     " # ###
+*   EXTENSION_OUT =
+    return        = gt_return.  " ## ## ###
+
+" ## ## ###
+IF gt_return IS NOT INITIAL.
+  LOOP AT gt_return INTO DATA(gs_return).
+    WRITE: / gs_return-message.
+  ENDLOOP.
+ENDIF.
+
+" # ###
+IF gt_list IS NOT INITIAL.
+
+  LOOP AT gt_list INTO DATA(gs_list).
+    WRITE : / gs_list-airlineid,
+              gs_list-airlineid	,
+              gs_list-bookingid	,
+              gs_list-connectid	,
+              gs_list-flightdate  ,
+              gs_list-customerid  ,
+              gs_list-class	,
+              gs_list-bookdate  ,
+              gs_list-counter	,
+              gs_list-agencynum	,
+              gs_list-reserved  ,
+              gs_list-cancelled	,
+              gs_list-passname  .
+
+  ENDLOOP.
+
+ENDIF.

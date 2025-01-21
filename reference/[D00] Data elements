@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Report ZBC430_D00_DATA_ELEMENTS
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zbc430_d00_data_elements.
+
+*- 1. ### ##
+
+TYPES : tv_fname TYPE c  LENGTH 10.  "local
+
+" Global Data type
+PARAMETERS : pa_fname TYPE zfirstname_d01,
+             pa_lname TYPE zlastname_d01,
+             pa_activ TYPE zassets_d00,
+             pa_liabs TYPE zliabilities_d02.
+
+DATA : gv_result TYPE zassets_d00.   "## - ## : ###
+
+
+*- 2. ### ## # ##
+
+START-OF-SELECTION.   " ### ## ##. ##### #### ## #####.
+
+  gv_result = pa_activ - pa_liabs.
+
+  WRITE :  pa_fname,
+           pa_lname,
+         / pa_activ,
+           pa_liabs,
+         / gv_result.

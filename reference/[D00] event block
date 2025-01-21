@@ -1,0 +1,125 @@
+*&---------------------------------------------------------------------*
+*& Report ZD00_EVENT_BLOCK
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zd00_event_block.
+
+TABLES : sscrfields, scarr.
+
+*PARAMETERS : pa_datum TYPE sy-datum DEFAULT sy-datum.
+*
+*DATA : gv_datum TYPE sy-datum.
+*
+*" Macro
+*DEFINE clr.
+*
+*  CLEAR : &1.
+*
+*END-OF-DEFINITION.
+*
+*
+**--------------------------------------------------------------------*
+**INITIALIZATION : ##### ### ## #### ###
+**--------------------------------------------------------------------*
+*INITIALIZATION.
+*
+*  IF pa_datum GT '20250101'.
+*
+*    pa_datum = pa_datum + 7.   "## ###
+**    clr pa_datum.
+*
+*  ENDIF.
+*
+**--------------------------------------------------------------------*
+** AT SELECTION-SCREEN : ##, F8 ##, ## ## #### ## ##
+**--------------------------------------------------------------------*
+*AT SELECTION-SCREEN.      " selection screen <##> ####.
+*
+*  gv_datum = pa_datum.
+*
+**--------------------------------------------------------------------*
+**START-OF-SELECTION.   : ### ## #### ####...
+**--------------------------------------------------------------------*
+*START-OF-SELECTION.
+*
+*  WRITE pa_datum.  "CLEAR : &1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECTION-SCREEN FUNCTION KEY 1.
+
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-b02.
+  PARAMETERS : pa_carr TYPE s_carrid OBLIGATORY.
+  SELECT-OPTIONS : so_carr FOR scarr-carrid.
+SELECTION-SCREEN END OF BLOCK b1.
+
+PARAMETERS : pa_conn TYPE s_conn_id.
+
+*&---------------------------------------------------------------------*
+*& INITIALIZATION
+*&---------------------------------------------------------------------*
+INITIALIZATION.
+*  PERFORM check_auth.
+*  PERFORM initialization.
+  sscrfields-functxt_01 = TEXT-b01.
+
+*&---------------------------------------------------------------------*
+*& AT SELECTION-SCREEN
+*&---------------------------------------------------------------------*
+AT SELECTION-SCREEN OUTPUT.  " PBO ## ##
+*  PERFORM modify_screen.
+
+AT SELECTION-SCREEN ON pa_carr. "value check
+*  PERFORM check_carr USING pa_carr.
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR pa_conn.  " F4
+*  PERFORM f4_carr USING pa_carr.
+
+AT SELECTION-SCREEN ON HELP-REQUEST FOR pa_carr.  " F1
+*  PERFORM f1_carr USING pa_carr.
+
+AT SELECTION-SCREEN.  "PAI
+
+*&---------------------------------------------------------------------*
+*& START-OF-SELECTION
+*&---------------------------------------------------------------------*
+START-OF-SELECTION.
+*  PERFORM get_data.   " DB ### ##
+*  PERFORM make_data.  " itab ## # ##
+
+
+*&---------------------------------------------------------------------*
+*& END-OF-SELECTION : ## ## START-OF-SELECTION ## ### ## ##
+*&---------------------------------------------------------------------*
+END-OF-SELECTION.
+*  PERFORM display_data.
+*  CALL SCREEN 100.

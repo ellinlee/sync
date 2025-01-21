@@ -1,0 +1,43 @@
+*&---------------------------------------------------------------------*
+*& Report ZBC400_D00_LOOP
+*&---------------------------------------------------------------------*
+*& Use Internal Table
+*&---------------------------------------------------------------------*
+REPORT zbc400_d00_loop.
+
+DATA : gt_connections TYPE bc400_t_connections.  "itab
+DATA : gs_connection  TYPE bc400_s_connection.    "wa
+*DATA : gs_connection LIKE LINE OF gt_connections.
+
+*- 2, 3# ### ###!!
+DATA : gt_connections2 TYPE TABLE OF bc400_s_connection WITH NON-UNIQUE KEY carrid connid.
+DATA : gt_connections3 TYPE TABLE OF bc400_s_connection. "standard, non-unique, default key
+
+*- ### ##
+TRY.
+    CALL METHOD cl_bc400_flightmodel=>get_connections
+      EXPORTING
+        iv_carrid      = space
+      IMPORTING
+*       et_connections = gt_connections.
+        et_connections = gt_connections2.
+
+  CATCH cx_bc400_no_data.
+    WRITE '#### ####.'.
+*  CATCH cx_bc400_no_auth.
+
+ENDTRY.
+
+*- ### ##
+SORT gt_connections BY deptime." ASCENDING.
+*SORT gt_connections ASCENDING BY deptime.
+
+*- ### ##
+
+LOOP AT gt_connections INTO gs_connection.
+
+  WRITE :/ gs_connection-carrid,
+          gs_connection-connid,
+          gs_connection-deptime.
+
+ENDLOOP.

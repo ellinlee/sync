@@ -1,0 +1,29 @@
+*&---------------------------------------------------------------------*
+*& Report ZD00_CLIENT_SPECIFIC
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zd00_client_specific.
+
+DATA : gt_spfli1 TYPE TABLE OF spfli.
+DATA : gt_spfli2 TYPE TABLE OF spfli.
+DATA : gt_spfli3 TYPE TABLE OF spfli.
+
+SELECT * FROM spfli
+         INTO TABLE gt_spfli1
+        WHERE carrid = 'AA'.
+
+*- old version (Obsolete)
+SELECT * FROM spfli
+         CLIENT SPECIFIED   "warning
+         INTO TABLE gt_spfli2
+        WHERE mandt = '200'
+          AND carrid = 'AA'.
+
+*- new
+SELECT * FROM spfli
+         USING CLIENT '200'  "new syntax
+         INTO TABLE @gt_spfli3
+          WHERE carrid = 'AA'.
+
+BREAK-POINT.

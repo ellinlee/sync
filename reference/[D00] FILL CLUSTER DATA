@@ -1,0 +1,96 @@
+*&---------------------------------------------------------------------*
+*& Report ZD00_FILL_CLUSTER_TAB
+*&---------------------------------------------------------------------*
+*& ### ### ###!! #### ###~
+*&---------------------------------------------------------------------*
+REPORT zd00_fill_cluster_tab.                              .
+
+DATA wa_scarr  TYPE scarr.
+DATA wa_spfli  TYPE spfli.
+DATA wa_flight TYPE sflight.
+
+DATA my_error TYPE i VALUE 0.
+
+DATA : gv_carr TYPE dd02t-tabname.
+DATA : gv_pfli TYPE dd02t-tabname.
+DATA : gv_fligh TYPE dd02t-tabname.
+DATA : gv_idx(2) TYPE n.
+DATA : gs_scarr TYPE scarr.
+DATA : gv_cnt TYPE i.
+
+*PARAMETERS : pa_carr  TYPE dd02t-tabname,
+*             pa_pfli  TYPE dd02t-tabname,
+*             pa_fligh TYPE dd02t-tabname.
+
+
+START-OF-SELECTION.
+" #### ##
+
+* Replace # by Your user-number and remove all * from here
+
+*  DELETE FROM zcarr#.
+*  DELETE FROM zpfli#.
+*  DELETE FROM zflight#.
+
+*  BREAK-POINT.
+
+*  DO 26 TIMES.
+*
+**    gv_idx = sy-index.
+*
+*    CONCATENATE 'ZCARR_D' gv_idx INTO gv_carr.
+*    CONCATENATE 'ZPFLI_D' gv_idx INTO gv_pfli.
+*    CONCATENATE 'ZFLIGHT_D' gv_idx INTO gv_fligh.
+*
+*    SELECT SINGLE * INTO CORRESPONDING FIELDS OF gs_scarr FROM (gv_carr).
+*
+*    IF sy-subrc = 0.
+*      CONTINUE.
+*
+*    ENDIF.
+*    gv_cnt = gv_cnt + 1.
+*
+*    DELETE FROM (gv_carr).
+*    DELETE FROM (gv_pfli).
+*    DELETE FROM (gv_fligh).
+*
+**    DELETE FROM (pa_carr).
+**    DELETE FROM (pa_pfli).
+**    DELETE FROM (pa_fligh).
+*
+*
+*    SELECT * FROM scarr INTO wa_scarr.
+*      INSERT INTO (gv_carr) VALUES wa_scarr.
+*    ENDSELECT.
+*
+*    IF sy-subrc = 0.
+*      SELECT * FROM spfli INTO wa_spfli.
+*        INSERT INTO (gv_pfli) VALUES wa_spfli.
+*      ENDSELECT.
+*
+*      IF sy-subrc = 0.
+*
+*        SELECT * FROM sflight INTO wa_flight.
+*          INSERT INTO (gv_fligh) VALUES wa_flight.
+*        ENDSELECT.
+*        IF sy-subrc <> 0.
+*          my_error = 1.
+*        ENDIF.
+*      ELSE.
+*        my_error = 2.
+*      ENDIF.
+*    ELSE.
+*      my_error = 3.
+*    ENDIF.
+*
+*    IF my_error = 0.
+*      WRITE / 'Data transport successfully finished'.
+*    ELSE.
+*      WRITE: / 'ERROR:', my_error.
+*    ENDIF.
+*
+*    WRITE / gv_cnt.
+*
+*    gv_idx = gv_idx + 1.
+*
+*  ENDDO.
