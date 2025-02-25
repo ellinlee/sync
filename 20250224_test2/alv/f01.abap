@@ -143,58 +143,59 @@ FORM get_data.
     WHERE a~cust_id IN so_cust
     AND a~book_id IN so_book.
 
-  "예매 데이터 가공
-  LOOP AT gt_booking1 INTO gs_booking1.
 
-    "영화 제목 데이터 가져오기
-    SELECT SINGLE *
-      FROM ztd17_movie
-      INTO CORRESPONDING FIELDS OF gs_booking1
-      WHERE movie_id = gs_booking1-movie_id.
+  IF gt_booking1 IS NOT INITIAL.
+    "예매 데이터 가공
+    LOOP AT gt_booking1 INTO gs_booking1.
 
-    "회원 이름 데이터 가져오기
-    SELECT SINGLE *
-      FROM ztd17_customer
-      INTO CORRESPONDING FIELDS OF gs_booking1
-      WHERE cust_id = gs_booking1-cust_id.
+      "영화 제목 데이터 가져오기
+      SELECT SINGLE *
+        FROM ztd17_movie
+        INTO CORRESPONDING FIELDS OF gs_booking1
+        WHERE movie_id = gs_booking1-movie_id.
 
-    "테이블 수정.
-    MODIFY gt_booking1 FROM gs_booking1.
+      "회원 이름 데이터 가져오기
+      SELECT SINGLE *
+        FROM ztd17_customer
+        INTO CORRESPONDING FIELDS OF gs_booking1
+        WHERE cust_id = gs_booking1-cust_id.
 
-  ENDLOOP.
+      "테이블 수정.
+      MODIFY gt_booking1 FROM gs_booking1.
+
+    ENDLOOP.
 
 *    "극장명 데이터 읽기 - for all entries 사용.
 *    "테이블 라인 수 계산.
-  DESCRIBE TABLE gt_booking1 LINES gv_itab_lines.
+    DESCRIBE TABLE gt_booking1 LINES gv_itab_lines.
 *
 *    "테이블에 데이터가 없을 시 종료.
-  IF gv_itab_lines < 1.
-    EXIT.
-  ENDIF.
+    IF gv_itab_lines < 1.
+      EXIT.
+    ENDIF.
 *
 *    "for all entries 사용을 위해 정렬 및 중복값 삭제
-  SORT gt_booking1 BY theater_id.
-  DELETE ADJACENT DUPLICATES FROM gt_booking1 COMPARING ALL FIELDS.
+    SORT gt_booking1 BY theater_id.
+    DELETE ADJACENT DUPLICATES FROM gt_booking1 COMPARING ALL FIELDS.
 
-  " 극장명 가져오기
-  SELECT *
-    INTO CORRESPONDING FIELDS OF TABLE gt_booking_temp
-    FROM ztd17_theater
-    FOR ALL ENTRIES IN gt_booking1
-    WHERE theater_id = gt_booking1-theater_id.
+    " 극장명 가져오기
+    SELECT *
+      INTO CORRESPONDING FIELDS OF TABLE gt_booking_temp
+      FROM ztd17_theater
+      FOR ALL ENTRIES IN gt_booking1
+      WHERE theater_id = gt_booking1-theater_id.
 
 *  " 극장명있는 데이터와 조인해서 가져온 데이터 합쳐 내부 테이블 수정.
-  LOOP AT gt_booking1 INTO gs_booking1.
-    READ TABLE gt_booking_temp INTO gs_booking_temp WITH KEY theater_id = gs_booking1-theater_id.
+    LOOP AT gt_booking1 INTO gs_booking1.
+      READ TABLE gt_booking_temp INTO gs_booking_temp WITH KEY theater_id = gs_booking1-theater_id.
 
-    gs_booking1-theater_nm = gs_booking_temp-theater_nm.
-    gs_booking1-location = gs_booking_temp-location.
+      gs_booking1-theater_nm = gs_booking_temp-theater_nm.
+      gs_booking1-location = gs_booking_temp-location.
 
-    "테이블 수정.
-    MODIFY gt_booking1 FROM gs_booking1.
-  ENDLOOP.
+      "테이블 수정.
+      MODIFY gt_booking1 FROM gs_booking1.
+    ENDLOOP.
 
-  IF sy-subrc = 0.
     DATA : lv_temp    TYPE string,
            lv_message TYPE string.
 
@@ -204,12 +205,12 @@ FORM get_data.
 
     MESSAGE lv_message TYPE 'S'.
 
-
   ELSE.
-    MESSAGE '조건에 맞는 데이터가 없습니다.' TYPE 'S'.
+    MESSAGE '조건에 맞는 데이터가 없습니다.' TYPE 'I' DISPLAY LIKE 'E'.
     LEAVE LIST-PROCESSING.
-
   ENDIF.
+
+
 
 ENDFORM.
 
